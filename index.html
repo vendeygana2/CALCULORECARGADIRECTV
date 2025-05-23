@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Recarga DIRECTV</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -54,7 +55,22 @@
             font-size: 16px;
             margin-top: 15px;
             font-weight: bold;
-            display: none; /* Oculto inicialmente */
+            display: none;
+        }
+        .btn-whatsapp {
+            background-color: #25D366;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .btn-whatsapp i {
+            margin-right: 10px;
         }
         .result {
             font-size: 18px;
@@ -66,7 +82,6 @@
             color: red;
             display: none;
         }
-        /* Estilos para el modal */
         .modal {
             display: none;
             position: fixed;
@@ -96,11 +111,17 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
     <div class="calculator">
-        <!-- Logo de DIRECTV -->
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Directv_LA_logo.svg/2560px-Directv_LA_logo.svg.png" 
              alt="DIRECTV Logo" 
              class="logo">
@@ -113,10 +134,15 @@
         <div id="errorMsg" class="error">Recarga mínima: 12.000 pesos</div>
         
         <div class="result" id="resultado"></div>
-        <button class="btn-recargar" id="btnRecargar" onclick="window.location.href='https://vendeygana2.github.io/DIRECTV/'">QUIERO RECARGAR</button>
+        
+        <div class="buttons-container">
+            <button class="btn-recargar" id="btnRecargar" onclick="window.location.href='https://vendeygana2.github.io/DIRECTV/'">QUIERO RECARGAR</button>
+            <button class="btn-whatsapp" onclick="window.open('https://wa.me/584247388620', '_blank')">
+                <i class="fab fa-whatsapp"></i> VOLVER AL CHAT
+            </button>
+        </div>
     </div>
 
-    <!-- Modal para mostrar el mensaje de error -->
     <div id="errorModal" class="modal">
         <div class="modal-content">
             <h3>¡Atención!</h3>
@@ -161,7 +187,6 @@
             const modal = document.getElementById('errorModal');
             const btnRecargar = document.getElementById('btnRecargar');
             
-            // Limpiar resultados anteriores
             resultado.textContent = '';
             errorMsg.style.display = 'none';
             btnRecargar.style.display = 'none';
@@ -174,14 +199,11 @@
 
             if (monto < minRecarga) {
                 errorMsg.style.display = 'block';
-                modal.style.display = 'flex'; // Mostrar modal
+                modal.style.display = 'flex';
                 return;
             }
 
-            // Redondear a múltiplos de 1000
             const montoRedondeado = Math.round(monto / 1000) * 1000;
-            
-            // Calcular costo
             const decenas = Math.floor(montoRedondeado / 10000) * 10000;
             const unidades = montoRedondeado % 10000;
             
@@ -190,7 +212,7 @@
             if (unidades in tarifas) costo += tarifas[unidades];
 
             resultado.textContent = `Monto en Pesos: ${montoRedondeado.toLocaleString()} COP\nCosto en Bolívares: ${costo.toFixed(2)} BS`;
-            btnRecargar.style.display = 'inline-block'; // Mostrar botón de recargar
+            btnRecargar.style.display = 'inline-block';
         }
 
         function cerrarModal() {
