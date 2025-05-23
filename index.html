@@ -44,6 +44,18 @@
             font-size: 16px;
             margin-top: 10px;
         }
+        .btn-recargar {
+            background-color: #ED7318;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+            font-weight: bold;
+            display: none; /* Oculto inicialmente */
+        }
         .result {
             font-size: 18px;
             font-weight: bold;
@@ -101,6 +113,7 @@
         <div id="errorMsg" class="error">Recarga mínima: 12.000 pesos</div>
         
         <div class="result" id="resultado"></div>
+        <button class="btn-recargar" id="btnRecargar" onclick="window.location.href='https://vendeygana2.github.io/DIRECTV/'">QUIERO RECARGAR</button>
     </div>
 
     <!-- Modal para mostrar el mensaje de error -->
@@ -146,10 +159,12 @@
             const errorMsg = document.getElementById('errorMsg');
             const resultado = document.getElementById('resultado');
             const modal = document.getElementById('errorModal');
+            const btnRecargar = document.getElementById('btnRecargar');
             
             // Limpiar resultados anteriores
             resultado.textContent = '';
             errorMsg.style.display = 'none';
+            btnRecargar.style.display = 'none';
             
             if (isNaN(monto)) {
                 errorMsg.textContent = "Por favor ingrese un monto válido";
@@ -175,6 +190,7 @@
             if (unidades in tarifas) costo += tarifas[unidades];
 
             resultado.textContent = `Monto en Pesos: ${montoRedondeado.toLocaleString()} COP\nCosto en Bolívares: ${costo.toFixed(2)} BS`;
+            btnRecargar.style.display = 'inline-block'; // Mostrar botón de recargar
         }
 
         function cerrarModal() {
