@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Recarga DIRECTV</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .calculator {
+            border: 2px solid #007BFF;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        .logo {
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto 20px;
+            display: block;
+        }
+        h2 {
+            color: #007BFF;
+            margin-top: 0;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+        .btn-calcular {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .result {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 15px 0;
+            min-height: 50px;
+        }
+        .error {
+            color: red;
+            display: none;
+        }
+        /* Estilos para el modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 80%;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+        .modal button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <!-- Logo de DIRECTV -->
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Directv_LA_logo.svg/2560px-Directv_LA_logo.svg.png" 
+             alt="DIRECTV Logo" 
+             class="logo">
+             
+        <h2>Calculadora de Recarga DIRECTV</h2>
+        <p>Ingrese el monto en pesos que desea recargar:</p>
+        
+        <input type="number" id="monto" placeholder="Ejemplo: 12000">
+        <button class="btn-calcular" onclick="calcularRecarga()">CALCULAR</button>
+        <div id="errorMsg" class="error">Recarga mínima: 12.000 pesos</div>
+        
+        <div class="result" id="resultado"></div>
+    </div>
+
+    <!-- Modal para mostrar el mensaje de error -->
+    <div id="errorModal" class="modal">
+        <div class="modal-content">
+            <h3>¡Atención!</h3>
+            <p>Disculpe, el monto mínimo establecido por DIRECTV es de 12,000 pesos.</p>
+            <button onclick="cerrarModal()">Entendido</button>
+        </div>
+    </div>
+
+    <script>
+        const tarifas = {
+            1000: 75.00,
+            2000: 85.00,
+            3000: 185.00,
+            4000: 205.00,
+            5000: 245.00,
+            6000: 295.00,
+            7000: 310.00,
+            8000: 360.00,
+            9000: 385.00,
+            10000: 400.00,
+            20000: 765.00,
+            30000: 1100.00,
+            40000: 1495.00,
+            50000: 1800.00,
+            60000: 2210.00,
+            70000: 2600.00,
+            80000: 3000.00,
+            90000: 3450.00,
+            100000: 3750.00,
+            110000: 4300.00,
+            120000: 4550.00,
+            130000: 4800.00,
+            140000: 4950.00,
+            150000: 5300.00
+        };
+        const minRecarga = 12000;
+
+        function calcularRecarga() {
+            const monto = parseInt(document.getElementById('monto').value);
+            const errorMsg = document.getElementById('errorMsg');
+            const resultado = document.getElementById('resultado');
+            const modal = document.getElementById('errorModal');
+            
+            // Limpiar resultados anteriores
+            resultado.textContent = '';
+            errorMsg.style.display = 'none';
+            
+            if (isNaN(monto)) {
+                errorMsg.textContent = "Por favor ingrese un monto válido";
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            if (monto < minRecarga) {
+                errorMsg.style.display = 'block';
+                modal.style.display = 'flex'; // Mostrar modal
+                return;
+            }
+
+            // Redondear a múltiplos de 1000
+            const montoRedondeado = Math.round(monto / 1000) * 1000;
+            
+            // Calcular costo
+            const decenas = Math.floor(montoRedondeado / 10000) * 10000;
+            const unidades = montoRedondeado % 10000;
+            
+            let costo = 0;
+            if (decenas in tarifas) costo += tarifas[decenas];
+            if (unidades in tarifas) costo += tarifas[unidades];
+
+            resultado.textContent = `Monto en Pesos: ${montoRedondeado.toLocaleString()} COP\nCosto en Bolívares: ${costo.toFixed(2)} BS`;
+        }
+
+        function cerrarModal() {
+            document.getElementById('errorModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
